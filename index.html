@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>원더윅스 계산기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background:
+        radial-gradient(circle at top left, #ffe1ec 0, transparent 32%),
+        radial-gradient(circle at top right, #dff3ff 0, transparent 35%),
+        linear-gradient(180deg, #fff8e7 0%, #fff4f8 100%);
+      color: #4a3f3f;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 26px 12px 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #fff;
+      color: #ff8eb3;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(255, 160, 190, 0.2);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      color: #3f3636;
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #7a6b6b;
+    }
+
+    .card {
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.95);
+      box-shadow: 0 16px 38px rgba(255,175,195,.22);
+      border-radius: 28px;
+    }
+
+    .calculator-card {
+      padding: 22px;
+      margin-top: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      height: 54px;
+      border: 2px solid #ffe0ea;
+      border-radius: 18px;
+      padding: 0 16px;
+      font-size: 16px;
+      background: #fff;
+      font-family: inherit;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      height: 56px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ff9fbd, #ffc36b);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(255,150,170,.35);
+    }
+
+    .notice {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #958484;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .result-section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .result-card {
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .days {
+      font-size: 42px;
+      font-weight: 800;
+      color: #ff7da8;
+      margin-bottom: 10px;
+    }
+
+    .weeks {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .cards {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .info-card {
+      padding: 18px;
+    }
+
+    .info-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ff7da8;
+      margin-bottom: 8px;
+    }
+
+    .info-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #5f5353;
+      margin: 0;
+    }
+
+    .calendar-section {
+      margin-top: 22px;
+      padding: 20px;
+    }
+
+    .calendar-header h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .calendar-header p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #7a6b6b;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0;
+      font-size: 12px;
+      color: #6b5d5d;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #fff;
+      border-radius: 999px;
+      padding: 7px 10px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot.leap { background: #ff9fbd; }
+    .dot.today { background: #8ccdf0; }
+    .dot.birth { background: #ffc36b; }
+
+    .calendar-list {
+      max-height: 620px;
+      overflow-y: auto;
+      padding-right: 4px;
+      scroll-behavior: smooth;
+    }
+
+    .month-card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 14px;
+      border: 1px solid #ffe4ed;
+    }
+
+    .month-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #4a3f3f;
+    }
+
+    .week-row,
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .week-row {
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #a28d8d;
+      text-align: center;
+    }
+
+    .day {
+      min-height: 42px;
+      border-radius: 13px;
+      background: #fff8fb;
+      font-size: 12px;
+      padding: 6px 4px;
+      text-align: center;
+      position: relative;
+      border: 1px solid #fff0f5;
+    }
+
+    .day.empty {
+      background: transparent;
+      border: none;
+    }
+
+    .day-number {
+      font-weight: 800;
+    }
+
+    .day-label {
+      display: block;
+      margin-top: 2px;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .day.leap {
+      background: #ffe0ea;
+      border-color: #ff9fbd;
+      color: #a73f64;
+    }
+
+    .day.today {
+      outline: 3px solid #8ccdf0;
+      background: #e5f6ff;
+    }
+
+    .day.birth {
+      background: #fff0b8;
+      border-color: #ffc36b;
+      color: #7a5b15;
+    }
+
+    .day.leap.today {
+      background: linear-gradient(135deg, #ffe0ea, #e5f6ff);
+    }
+
+    #ads-container {
+      margin-top: 18px;
+      padding: 24px;
+      text-align: center;
+      color: #a68f8f;
+      font-weight: 700;
+      border: 2px dashed #ffd1df;
+      background: rgba(255,255,255,.65);
+      border-radius: 28px;
+    }
+
+    .footer {
+      text-align: center;
+      margin: 22px 0 10px;
+      font-size: 12px;
+      color: #9a8787;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 768px) {
+      body { padding: 42px 24px; }
+      h1 { font-size: 42px; }
+      .subtitle { font-size: 17px; }
+      .calculator-card { padding: 30px; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .days { font-size: 54px; }
+      .calendar-list { max-height: 720px; }
+      .day { min-height: 56px; font-size: 14px; }
+      .day-label { font-size: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="badge">👶 초보 부모를 위한 성장 도약 계산기</div>
+      <h1>원더윅스 계산기</h1>
+      <p class="subtitle">
+        아기의 생년월일 또는 출산 예정일을 입력하면<br>
+        오늘 기준 주차와 원더윅스 달력을 보여드려요.
+      </p>
+    </section>
+
+    <section class="calculator-card card">
+      <label for="birthDate">아기 생년월일 또는 출산 예정일</label>
+      <input type="date" id="birthDate" />
+      <button type="button" onclick="calculateWonderWeeks()">결과 보기</button>
+      <p class="notice">
+        ※ 원더윅스는 참고용 정보이며, 아기의 발달 속도는 개인차가 있어요.
+      </p>
+    </section>
+
+    <section id="resultSection" class="result-section">
+      <div class="result-card card">
+        <div id="daysText" class="days">D+0</div>
+        <div id="weeksText" class="weeks">생후 0주 차</div>
+        <div id="statusText" class="status">결과를 계산 중입니다</div>
+      </div>
+
+      <div class="cards">
+        <article class="info-card card">
+          <div class="info-title">🌱 현재 발달 단계</div>
+          <p id="leapText" class="info-text">-</p>
+        </article>
+
+        <article class="info-card card">
+          <div class="info-title">🍼 부모를 위한 육아 팁</div>
+          <p id="tipText" class="info-text">-</p>
+        </article>
+
+        <article class="info-card card">
+          <div class="info-title">💛 오늘의 응원 문구</div>
+          <p id="cheerText" class="info-text">-</p>
+        </article>
+
+        <article class="info-card card">
+          <div class="info-title">📌 참고</div>
+          <p id="rangeText" class="info-text">-</p>
+        </article>
+      </div>
+
+      <section class="calendar-section card">
+        <div class="calendar-header">
+          <h2>📅 우리 아기 원더윅스 달력</h2>
+          <p>
+            탄생일(혹은 출산예정일)부터 마지막 원더윅스가 끝나는 달까지 보여드려요.
+            분홍색 날짜가 원더윅스 기간입니다.
+          </p>
+        </div>
+
+        <div class="legend">
+          <span><i class="dot birth"></i> 탄생일(혹은 출산예정일)</span>
+          <span><i class="dot leap"></i> 원더윅스</span>
+          <span><i class="dot today"></i> 오늘</span>
+        </div>
+
+        <div id="calendarList" class="calendar-list"></div>
+      </section>
+
+      <div id="ads-container">광고 영역</div>
+    </section>
+
+    <p class="footer">
+      이 계산기는 육아 참고용 서비스입니다.<br>
+      아기의 건강이나 발달이 걱정된다면 소아청소년과 전문의와 상담하세요.
+    </p>
+  </main>
+
+  <script>
+    const wonderWeeks = [
+      { order: 1, start: 4.5, end: 5.5, title: "감각의 도약", tip: "아기를 포근하게 꽉 안아주고, 조용하고 안정적인 환경을 만들어 주세요.", cheer: "세상을 처음 느끼느라 무서워하고 있어요. 따뜻하게 안아주세요!" },
+      { order: 2, start: 7.5, end: 9.5, title: "패턴의 도약", tip: "모빌이나 흑백 초점책처럼 반복적인 패턴을 보여주세요.", cheer: "아기의 뇌가 폭발적으로 성장 중입니다. 조금만 더 힘내세요!" },
+      { order: 3, start: 11.5, end: 12.5, title: "미묘한 변화의 도약", tip: "부드러운 노래를 불러주고, 천천히 말을 걸어 주세요.", cheer: "오늘도 육아 출근 완료! 아기가 엄마 아빠 목소리에 귀 기울이고 있어요." },
+      { order: 4, start: 14.5, end: 19.5, title: "사건의 도약", tip: "까꿍 놀이, 딸랑이 놀이처럼 원인과 결과가 있는 놀이를 해보세요.", cheer: "가장 길고 힘든 시기 중 하나예요. 이 시기만 지나면 훌쩍 커 있을 거예요!" },
+      { order: 5, start: 22.5, end: 26.5, title: "관계의 도약", tip: "장난감을 천천히 움직이며 거리와 관계를 느낄 수 있게 도와주세요.", cheer: "엄마 아빠가 잠시 멀어지는 것도 크게 느껴질 수 있어요. 자주 안심시켜 주세요." },
+      { order: 6, start: 33.5, end: 37.5, title: "범주의 도약", tip: "동물, 음식, 장난감처럼 비슷한 것들을 묶어 보여주며 이름을 말해 주세요.", cheer: "아기는 세상을 분류하는 법을 배우고 있어요. 작은 호기심이 큰 성장으로 이어져요." },
+      { order: 7, start: 41.5, end: 46.5, title: "순서의 도약", tip: "블록 쌓기, 컵 넣기처럼 순서를 경험하는 놀이를 해보세요.", cheer: "아기가 행동의 순서를 이해하려고 애쓰는 중이에요. 서툴러도 충분히 잘하고 있어요!" },
+      { order: 8, start: 50.5, end: 54.5, title: "프로그램의 도약", tip: "양치, 손 씻기, 정리 같은 생활 루틴을 반복해서 알려 주세요.", cheer: "아기는 여러 행동이 이어져 하나의 과정이 된다는 걸 배우고 있어요." },
+      { order: 9, start: 59.5, end: 64.5, title: "원칙의 도약", tip: "간단한 규칙 놀이를 하고, 되는 것과 안 되는 것을 부드럽게 반복해 주세요.", cheer: "자기주장이 강해질 수 있어요. 고집이 아니라 성장의 신호일 수 있습니다." },
+      { order: 10, start: 70.5, end: 75.5, title: "시스템의 도약", tip: "역할놀이, 선택 놀이, 간단한 문제 해결 놀이를 해보세요.", cheer: "아기는 더 복잡한 세상의 구조를 이해하려고 해요. 정말 많이 자라고 있어요!" }
+    ];
+
+    function calculateWonderWeeks() {
+        const input = document.getElementById("birthDate").value;
+        
+        if (!input) {
+            alert("아기의 생년월일 또는 출산 예정일을 선택해 주세요.");
+            return;
+        }
+        
+        const baseDate = new Date(input + "T00:00:00");
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const diffDays = Math.floor((today - baseDate) / 86400000);
+        const isFutureDate = diffDays < 0;
+        
+        const currentWeek = diffDays / 7;
+        const displayWeek = Math.floor(currentWeek) + 1;
+        
+        const currentLeap = !isFutureDate
+            ? wonderWeeks.find(item => currentWeek >= item.start && currentWeek <= item.end)
+            : null;
+        
+        document.getElementById("daysText").textContent = isFutureDate
+            ? `D${diffDays}`
+            : `D+${diffDays}`;
+        
+        document.getElementById("weeksText").textContent = isFutureDate
+            ? `출산까지 ${Math.abs(diffDays)}일 남았어요`
+            : `생후 ${displayWeek}주 차`;
+        
+        const statusText = document.getElementById("statusText");
+        
+        if (isFutureDate) {
+            statusText.textContent = "🍼 아직 출산 예정일 전입니다.";
+            statusText.style.background = "#fff0b8";
+            statusText.style.color = "#7a5b15";
+        
+            document.getElementById("leapText").textContent = "원더윅스는 기준일 이후부터 계산돼요.";
+            document.getElementById("tipText").textContent = "출산 전에는 아기 맞이 준비와 부모님의 휴식이 가장 중요해요.";
+            document.getElementById("cheerText").textContent = "곧 만나게 될 아기를 기다리는 이 시간도 정말 소중한 시간이예요.";
+            document.getElementById("rangeText").textContent = "아래 달력에서 출산 예정일 이후 원더윅스 기간을 미리 확인할 수 있어요.";
+        } else if (currentLeap) {
+            statusText.textContent = `🚨 현재 ${currentLeap.order}차 원더윅스 기간입니다!`;
+            statusText.style.background = "#ffe0ea";
+            statusText.style.color = "#b74d70";
+        
+            document.getElementById("leapText").textContent = `${currentLeap.order}차 원더윅스 · ${currentLeap.title}`;
+            document.getElementById("tipText").textContent = currentLeap.tip;
+            document.getElementById("cheerText").textContent = currentLeap.cheer;
+            document.getElementById("rangeText").textContent = `${currentLeap.start}주 ~ ${currentLeap.end}주 사이에 나타나는 도약 시기입니다.`;
+        } else {
+            const nextLeap = wonderWeeks.find(item => currentWeek < item.start);
+        
+            statusText.textContent = "✨ 지금은 비교적 평온한 시기입니다.";
+            statusText.style.background = "#e5f6ff";
+            statusText.style.color = "#3f7f9f";
+        
+            document.getElementById("leapText").textContent = "현재 해당되는 원더윅스 구간은 아니에요.";
+            document.getElementById("tipText").textContent = "수면, 수유, 놀이 루틴을 편안하게 유지해 주세요.";
+            document.getElementById("cheerText").textContent = "오늘도 충분히 잘하고 있어요. 완벽한 부모보다 따뜻한 부모가 더 좋아요.";
+        
+            document.getElementById("rangeText").textContent = nextLeap
+            ? `다음 원더윅스는 ${nextLeap.order}차 ${nextLeap.title}이며, 약 ${Math.ceil(nextLeap.start * 7 - diffDays)}일 후 시작될 수 있어요.`
+            : "일반적인 10차 원더윅스 구간을 모두 지난 시기입니다.";
+        }
+        
+        renderCalendar(baseDate, today);
+        
+        document.getElementById("resultSection").style.display = "block";
+        document.getElementById("resultSection").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    function renderCalendar(baseDate, today) {
+      const calendarList = document.getElementById("calendarList");
+      calendarList.innerHTML = "";
+
+      const lastLeap = wonderWeeks[wonderWeeks.length - 1];
+      const finalDate = addDays(baseDate, Math.ceil(lastLeap.end * 7));
+
+      let currentMonth = new Date(baseDate.getFullYear(), baseDate.getMonth(), 1);
+      const endMonth = new Date(finalDate.getFullYear(), finalDate.getMonth(), 1);
+
+      while (currentMonth <= endMonth) {
+        calendarList.appendChild(createMonthCalendar(currentMonth, baseDate, today));
+        currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+      }
+    }
+
+    function createMonthCalendar(monthDate, baseDate, today) {
+      const year = monthDate.getFullYear();
+      const month = monthDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startWeekday = firstDay.getDay();
+
+      const monthCard = document.createElement("div");
+      monthCard.className = "month-card";
+
+      const title = document.createElement("div");
+      title.className = "month-title";
+      title.textContent = `${year}년 ${month + 1}월`;
+      monthCard.appendChild(title);
+
+      const weekRow = document.createElement("div");
+      weekRow.className = "week-row";
+      ["일", "월", "화", "수", "목", "금", "토"].forEach(day => {
+        const el = document.createElement("div");
+        el.textContent = day;
+        weekRow.appendChild(el);
+      });
+      monthCard.appendChild(weekRow);
+
+      const daysGrid = document.createElement("div");
+      daysGrid.className = "days-grid";
+
+      for (let i = 0; i < startWeekday; i++) {
+        const empty = document.createElement("div");
+        empty.className = "day empty";
+        daysGrid.appendChild(empty);
+      }
+
+      for (let day = 1; day <= lastDay.getDate(); day++) {
+        const date = new Date(year, month, day);
+        const dayEl = document.createElement("div");
+        dayEl.className = "day";
+
+        const diffDays = Math.floor((date - baseDate) / 86400000);
+        const week = diffDays / 7;
+        const leap = wonderWeeks.find(item => week >= item.start && week <= item.end);
+
+        if (isSameDate(date, baseDate)) {
+          dayEl.classList.add("birth");
+        }
+
+        if (leap) {
+          dayEl.classList.add("leap");
+        }
+
+        if (isSameDate(date, today)) {
+          dayEl.classList.add("today");
+        }
+
+        dayEl.innerHTML = `
+          <span class="day-number">${day}</span>
+          ${leap ? `<span class="day-label">${leap.order}차</span>` : ""}
+          ${isSameDate(date, baseDate) ? `<span class="day-label">탄생일</span>` : ""}
+          ${isSameDate(date, today) ? `<span class="day-label">오늘</span>` : ""}
+        `;
+
+        daysGrid.appendChild(dayEl);
+      }
+
+      monthCard.appendChild(daysGrid);
+      return monthCard;
+    }
+
+    function addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    function isSameDate(a, b) {
+      return a.getFullYear() === b.getFullYear()
+        && a.getMonth() === b.getMonth()
+        && a.getDate() === b.getDate();
+    }
+  </script>
+</body>
+</html>
