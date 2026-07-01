@@ -67,6 +67,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="easytools-dropdown-content">
                         <a href="https://seasonal.easytools.kr">사계절 제철 음식</a>
                         <a href="https://pet-age.easytools.kr">반려동물 나이 환산</a>
+                        <a href="https://alcohol.easytools.kr">알코올 해소(숙취) 시간</a>
+                        <a href="https://sleep.easytools.kr">수면 사이클 기상 시간</a>
+                        <a href="https://calorie.easytools.kr">운동 ↔ 야식 칼로리 환산</a>
                     </div>
                 </div>
             </nav>
