@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const headerHTML = `
         <header class="easytools-header">
             <div class="easytools-logo">
-                <a href="https://easytools.kr">손쉬운 도구들</a>
+                <a href="https://easytools.kr">Easy Tools</a>
             </div>
             <nav class="easytools-nav">
                 <div class="easytools-dropdown">
@@ -81,9 +81,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <span style="color:#ddd">|</span>
                 <a href="#">개인정보 처리방침</a>
                 <span style="color:#ddd">|</span>
-                <a href="mailto:contact@easytools.kr?subject=[손쉬운도구들 문의]">문의하기</a>
+                <a href="mailto:contact@easytools.kr?subject=[Easy Tools 문의]">문의하기</a>
             </div>
-            <p><strong>손쉬운 도구들</strong> | 일상 속 복잡한 계산과 진단을 가장 심플하게 해결합니다.</p>
+            <p><strong>Easy Tools</strong> | 일상 속 복잡한 계산과 진단을 가장 심플하게 해결합니다.</p>
             <p style="color:#999; font-size:12px;">본 서비스의 계산 결과는 모의 계산용 참고 자료이며 법적 효력이 없습니다.</p>
             <p>© 2026 EasyTools.kr All rights reserved.</p>
         </footer>
