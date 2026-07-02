@@ -87,9 +87,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const footerHTML = `
         <footer class="easytools-footer">
             <div class="easytools-footer-links">
-                <a href="/terms.html">이용약관</a>
+                <a href="https://easytools.kr/terms.html">이용약관</a>
                 <span style="color:#ddd">|</span>
-                <a href="/privacy.html">개인정보처리방침</a>
+                <a href="https://easytools.kr/privacy.html">개인정보처리방침</a>
                 <span style="color:#ddd">|</span>
                 <a href="mailto:nocomenty7@gmail.com?subject=[EasyTools 문의]">문의하기</a>
             </div>
