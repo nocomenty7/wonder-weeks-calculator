@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <span style="color:#ddd">|</span>
                 <a href="/privacy.html">개인정보처리방침</a>
                 <span style="color:#ddd">|</span>
-                <a href="mailto:contact@easytools.kr?subject=[EasyTools 문의]">문의하기</a>
+                <a href="mailto:nocomenty7@gmail.com?subject=[EasyTools 문의]">문의하기</a>
             </div>
             <p><strong>EasyTools</strong> | 일상 속 복잡한 계산과 진단을 가장 심플하게 해결합니다.</p>
             <p style="color:#999; font-size:12px;">본 서비스의 계산 결과는 모의 계산용 참고 자료이며 법적 효력이 없습니다.</p>
