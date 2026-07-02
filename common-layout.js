@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <a href="https://fire.easytools.kr">조기 은퇴(FIRE) 계산기</a>
                         <a href="https://rent-compare.easytools.kr">전세 vs 월세 비교</a>
                         <a href="https://child-invest.easytools.kr">자녀 증여·복리 계산기</a>
-                        ``
+                        <!----!>
                     </div>
                 </div>
                 <div class="easytools-dropdown">
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <a href="https://tax-couple.easytools.kr">맞벌이 연말정산 비율</a>
                         <a href="https://median-income.easytools.kr">2026 가구 중위소득</a>
                         <a href="https://health-dependent.easytools.kr">건보료 피부양자 진단</a>
-                        ``
+                        <!----!>
                     </div>
                 </div>
                 <div class="easytools-dropdown">
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="easytools-dropdown-content">
                         <a href="https://easytools.kr/wonder">원더윅스 계산기</a>
                         <a href="https://growth.easytools.kr">아이 예상 키·성장표</a>
-                        ``
+                        <!----!>
                     </div>
                 </div>
                 <div class="easytools-dropdown">
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <a href="https://alcohol.easytools.kr">알코올 해소(숙취) 시간</a>
                         <a href="https://sleep.easytools.kr">수면 사이클 기상 시간</a>
                         <a href="https://calorie.easytools.kr">운동 ↔ 야식 칼로리 환산</a>
-                        ``
+                        <!----!>
                     </div>
                 </div>
             </nav>
